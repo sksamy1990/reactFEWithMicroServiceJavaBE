@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-react-to-customer
+  namespace: backend
+spec:
+  podSelector:
+    matchLabels:
+      app: my-customer-service
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: frontend
+          podSelector:
+            matchLabels:
+              app: my-react-fe-app
+      ports:
+        - protocol: TCP
+          port: 8080
+  policyTypes:
+    - Ingress
